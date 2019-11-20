@@ -21,8 +21,8 @@ $found = FALSE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $country = sanitizeData($_GET["query"]);
-  echo $country;
-  print_R($_GET);
+  // echo $country;
+  // print_R($_GET);
   if ($country===0) {
     ?>
     <h3>NOT FOUND</h3>
@@ -33,21 +33,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       $stmt = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%';");
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
   ?>
-    <ul>
-    <?php foreach ($results as $row): ?>
-      <li><?= $row['name'] . ' is ruled by ' . $row['head_of_state']; ?></li>
-    <?php endforeach; ?>
-    </ul><?php
+    <table>
+      <thead>
+	    	<tr class="heading">
+	    		<th>Name</th>
+	    		<th>Continent</th>
+	    		<th>Independence Year</th>
+	    		<th>Head of State</th>
+	    	</tr>
+    	</thead>
+
+	    <tbody>
+	      <?php foreach ($results as $row): ?><tr>
+        <td><?= $row['name'];?></td>
+        <td><?= $row['continent'];?></td>
+        <td><?= $row['independence_year'];?></td>
+        <td><?= $row['head_of_state'];?></td></tr>
+      <?php endforeach; ?>
+	    </tbody>
+    </table>
     
+    
+    <?php
   } else {
       $stmt = $conn->query("SELECT * FROM countries");
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
   ?>
-    <ul>
-    <?php foreach ($results as $row): ?>
-      <li><?= $row['name'] . ' is ruled by ' . $row['head_of_state']; ?></li>
-    <?php endforeach; ?>
-    </ul><?php
+    <table>
+      <thead>
+	    	<tr class="heading">
+	    		<th>Name</th>
+	    		<th>Continent</th>
+	    		<th>Independence Year</th>
+	    		<th>Head of State</th>
+	    	</tr>
+    	</thead>
+
+	    <tbody>
+	      <?php foreach ($results as $row): ?><tr>
+        <td><?= $row['name'];?></td>
+        <td><?= $row['continent'];?></td>
+        <td><?= $row['independence_year'];?></td>
+        <td><?= $row['head_of_state'];?></td></tr>
+      <?php endforeach; ?>
+	    </tbody>
+    </table>
+    
+    
+    <?php
   }
 }
 ?>
