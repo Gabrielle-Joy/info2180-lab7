@@ -1,1 +1,38 @@
 /* Add your own styles */
+body {
+	font-family: Verdana;
+	font-size: 1.1em;
+}
+
+/*removing the border between the columns*/
+table {
+	border-collapse: collapse;
+	width:1000px;
+	margin-top: 20px;
+}
+
+/* adding space between the columns*/
+th, td {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 1px;
+}
+
+/*row changes color when hovered over*/
+tr:hover td{background-color:  #cc6600;}
+
+/*every other row under the header is a different color*/
+tr:nth-child(even) {background: #eeeff2;}
+tr:nth-child(odd) {background: #dfe1e7;}
+
+/* editing the table header*/
+th {
+	color: white;
+	text-align: left;
+	font-weight: bold;
+	background-color: #687291;
+}
+
+td:nth-child(4) { text-align:center; }
+td:nth-child(5) { text-align:center; }
+td:nth-child(6) { text-align:center; }
