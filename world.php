@@ -20,7 +20,7 @@ function sanitizeData($data) {
 $found = FALSE;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  $country = sanitizeData($_GET["query"]);
+  $country = sanitizeData($_GET["country"]);
   // echo $country;
   // print_R($_GET);
   if ($country===0) {
@@ -29,32 +29,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <?php
   }
   if($country!=="") {
+    
+      if (!$_GET["context"]) {
+        
+        $stmt = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%';");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+      <table>
+        <thead>
+  	    	<tr class="heading">
+  	    		<th>Name</th>
+  	    		<th>Continent</th>
+  	    		<th>Independence Year</th>
+  	    		<th>Head of State</th>
+  	    	</tr>
+      	</thead>
+  
+  	    <tbody>
+  	      <?php foreach ($results as $row): ?><tr>
+          <td><?= $row['name'];?></td>
+          <td><?= $row['continent'];?></td>
+          <td><?= $row['independence_year'];?></td>
+          <td><?= $row['head_of_state'];?></td></tr>
+        <?php endforeach; ?>
+  	    </tbody>
+      </table>
       
-      $stmt = $conn->query("SELECT * FROM countries WHERE name LIKE '%$country%';");
-      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  ?>
-    <table>
-      <thead>
-	    	<tr class="heading">
-	    		<th>Name</th>
-	    		<th>Continent</th>
-	    		<th>Independence Year</th>
-	    		<th>Head of State</th>
-	    	</tr>
-    	</thead>
-
-	    <tbody>
-	      <?php foreach ($results as $row): ?><tr>
-        <td><?= $row['name'];?></td>
-        <td><?= $row['continent'];?></td>
-        <td><?= $row['independence_year'];?></td>
-        <td><?= $row['head_of_state'];?></td></tr>
-      <?php endforeach; ?>
-	    </tbody>
-    </table>
-    
-    
-    <?php
+      
+      <?php
+      } else {
+        $stmt = $conn->query("SELECT c.name, c.district, c.population FROM cities c join countries cs on
+c.country_code = cs.code WHERE c.name LIKE '%$country%';");
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+      <table>
+        <thead>
+  	    	<tr class="heading">
+  	    		<th>Name</th>
+  	    		<th>District</th>
+  	    		<th>Population</th>
+  	    	</tr>
+      	</thead>
+  
+  	    <tbody>
+  	      <?php foreach ($results as $row): ?>
+  	      <tr>
+            <td><?= $row['name'];?></td>
+            <td><?= $row['district'];?></td>
+            <td><?= $row['population'];?></td>
+          </tr>
+        <?php endforeach; ?>
+  	    </tbody>
+      </table>
+      
+      
+      <?php
+      }
   } else {
       $stmt = $conn->query("SELECT * FROM countries");
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
